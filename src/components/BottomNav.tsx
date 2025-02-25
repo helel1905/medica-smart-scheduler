@@ -1,5 +1,5 @@
 
-import { Home, Calendar, FileText, CreditCard, Stethoscope } from "lucide-react";
+import { Home, Calendar, FileText, CreditCard, Stethoscope, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 const BottomNav = () => {
@@ -8,9 +8,9 @@ const BottomNav = () => {
   const navItems = [
     { icon: Home, label: "首页", path: "/" },
     { icon: Calendar, label: "预约", path: "/appointments" },
-    { icon: FileText, label: "病历", path: "/records" },
     { icon: CreditCard, label: "支付", path: "/payments" },
     { icon: Stethoscope, label: "AI问诊", path: "/ai-diagnosis" },
+    { icon: User, label: "我的", path: "/profile" },
   ];
 
   return (

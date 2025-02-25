@@ -1,6 +1,7 @@
 
-import { Calendar, FileText, MessageCircle, User } from "lucide-react";
+import { Calendar, FileText, MessageCircle, User, AlertCircle } from "lucide-react";
 import Layout from "@/components/Layout";
+import { Link } from "react-router-dom";
 
 const quickLinks = [
   {
@@ -33,10 +34,57 @@ const quickLinks = [
   },
 ];
 
+const mockUnpaidOrders = [
+  {
+    id: 1,
+    type: "挂号费",
+    amount: 50,
+    department: "内科",
+    dueTime: "2024-03-16 15:00",
+  },
+  {
+    id: 2,
+    type: "检查费",
+    amount: 200,
+    department: "外科",
+    dueTime: "2024-03-16 16:30",
+  },
+];
+
 const Index = () => {
   return (
     <Layout>
       <div className="p-4 animate-fade-in">
+        {/* Unpaid Orders Alert */}
+        {mockUnpaidOrders.length > 0 && (
+          <div className="mb-6">
+            <div className="bg-red-50 rounded-xl p-4 shadow-sm">
+              <div className="flex items-center gap-2 text-red-500 mb-2">
+                <AlertCircle className="w-5 h-5" />
+                <h2 className="font-semibold">待支付订单</h2>
+              </div>
+              <div className="space-y-3">
+                {mockUnpaidOrders.map((order) => (
+                  <Link
+                    key={order.id}
+                    to="/payments"
+                    className="flex items-center justify-between bg-white p-3 rounded-lg"
+                  >
+                    <div>
+                      <p className="font-medium">{order.type}</p>
+                      <p className="text-sm text-gray-600">{order.department}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold text-red-500">¥{order.amount}</p>
+                      <p className="text-xs text-gray-500">{order.dueTime}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Banner */}
         <div className="mb-6 bg-white rounded-xl p-4 shadow-sm">
           <h2 className="text-lg font-semibold mb-2">医院公告</h2>
@@ -50,9 +98,9 @@ const Index = () => {
           {quickLinks.map((link) => {
             const Icon = link.icon;
             return (
-              <a
+              <Link
                 key={link.path}
-                href={link.path}
+                to={link.path}
                 className="flex flex-col items-center justify-center p-4 bg-white rounded-xl shadow-sm transition-transform duration-200 active:scale-95"
               >
                 <div
@@ -61,7 +109,7 @@ const Index = () => {
                   <Icon className={`${link.iconColor} w-6 h-6`} />
                 </div>
                 <span className="text-gray-700 text-sm">{link.label}</span>
-              </a>
+              </Link>
             );
           })}
         </div>
