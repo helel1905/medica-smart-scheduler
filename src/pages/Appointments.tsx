@@ -7,17 +7,18 @@ import { useNavigate } from "react-router-dom";
 const mockDepartments = [
   {
     id: 1,
-    name: "内科",
+    name: "内科系统",
     subDepartments: [
       {
         id: 11,
-        name: "呼吸内科",
-        description: "专注于呼吸系统疾病的诊断与治疗",
+        name: "心血管内科",
+        description: "专注于冠心病、高血压、心律失常、心力衰竭等疾病的诊疗。特色专业：介入心脏病学、心脏电生理、结构性心脏病。",
         doctors: [
           { 
             id: 111,
-            name: "张医生",
+            name: "王心医",
             title: "主任医师",
+            expertise: "冠心病、心律失常",
             schedule: {
               "2024-03-16": { am: true, pm: true },
               "2024-03-17": { am: true, pm: false },
@@ -28,8 +29,9 @@ const mockDepartments = [
           },
           { 
             id: 112,
-            name: "李医生",
+            name: "李心医",
             title: "副主任医师",
+            expertise: "高血压、心力衰竭",
             schedule: {
               "2024-03-16": { am: false, pm: true },
               "2024-03-17": { am: true, pm: true },
@@ -42,13 +44,14 @@ const mockDepartments = [
       },
       {
         id: 12,
-        name: "消化内科",
-        description: "专注于消化系统疾病的诊断与治疗",
+        name: "呼吸与危重症医学科",
+        description: "专注于肺炎、哮喘、慢阻肺、肺癌、睡眠呼吸障碍等疾病的诊疗。特色专业：呼吸介入、肺移植、呼吸康复。",
         doctors: [
           { 
             id: 121,
-            name: "王医生",
+            name: "张呼医",
             title: "主任医师",
+            expertise: "肺癌、危重症",
             schedule: {
               "2024-03-16": { am: true, pm: true },
               "2024-03-17": { am: false, pm: true },
@@ -59,26 +62,159 @@ const mockDepartments = [
           },
         ],
       },
+      {
+        id: 13,
+        name: "消化内科",
+        description: "专注于胃炎、溃疡病、肝硬化、胰腺炎、炎症性肠病等疾病的诊疗。特色专业：内镜诊疗、肝病学、胃肠动力。",
+        doctors: [
+          { 
+            id: 131,
+            name: "陈消医",
+            title: "主任医师",
+            expertise: "胃肠疾病、内镜诊疗",
+            schedule: {
+              "2024-03-16": { am: true, pm: false },
+              "2024-03-17": { am: true, pm: true },
+              "2024-03-18": { am: true, pm: true },
+              "2024-03-19": { am: false, pm: true },
+              "2024-03-20": { am: true, pm: false },
+            }
+          },
+        ],
+      },
     ],
   },
   {
     id: 2,
-    name: "外科",
+    name: "外科系统",
     subDepartments: [
       {
         id: 21,
         name: "普通外科",
-        description: "提供常见外科疾病的诊疗服务",
+        description: "提供甲状腺/乳腺外科、胃肠外科、肝胆外科、疝与腹壁外科等诊疗服务。特色专业：微创外科、减重代谢外科。",
         doctors: [
           { 
             id: 211,
-            name: "刘医生",
+            name: "刘外医",
             title: "主任医师",
+            expertise: "微创手术、甲状腺手术",
             schedule: {
               "2024-03-16": { am: true, pm: false },
               "2024-03-17": { am: true, pm: true },
               "2024-03-18": { am: false, pm: true },
               "2024-03-19": { am: true, pm: false },
+              "2024-03-20": { am: true, pm: true },
+            }
+          },
+        ],
+      },
+      {
+        id: 22,
+        name: "骨科",
+        description: "专注于创伤骨科、关节外科、脊柱外科、运动医学等领域。特色专业：骨肿瘤、显微外科。",
+        doctors: [
+          { 
+            id: 221,
+            name: "孙骨医",
+            title: "主任医师",
+            expertise: "关节置换、脊柱外科",
+            schedule: {
+              "2024-03-16": { am: true, pm: true },
+              "2024-03-17": { am: true, pm: false },
+              "2024-03-18": { am: true, pm: true },
+              "2024-03-19": { am: false, pm: true },
+              "2024-03-20": { am: true, pm: false },
+            }
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: "专科科室",
+    subDepartments: [
+      {
+        id: 31,
+        name: "妇产科",
+        description: "提供妇科（肿瘤/内分泌）、产科（高危妊娠）、生殖医学等服务。特色专业：盆底康复、胎儿医学。",
+        doctors: [
+          { 
+            id: 311,
+            name: "周妇医",
+            title: "主任医师",
+            expertise: "妇科肿瘤、高危妊娠",
+            schedule: {
+              "2024-03-16": { am: true, pm: true },
+              "2024-03-17": { am: false, pm: true },
+              "2024-03-18": { am: true, pm: false },
+              "2024-03-19": { am: true, pm: true },
+              "2024-03-20": { am: true, pm: false },
+            }
+          },
+        ],
+      },
+      {
+        id: 32,
+        name: "儿科",
+        description: "包括新生儿科、儿童呼吸/消化/神经专科等。特色专业：儿童血液肿瘤、发育行为儿科。",
+        doctors: [
+          { 
+            id: 321,
+            name: "吴儿医",
+            title: "主任医师",
+            expertise: "儿童呼吸系统疾病",
+            schedule: {
+              "2024-03-16": { am: true, pm: false },
+              "2024-03-17": { am: true, pm: true },
+              "2024-03-18": { am: true, pm: true },
+              "2024-03-19": { am: false, pm: true },
+              "2024-03-20": { am: true, pm: false },
+            }
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 4,
+    name: "中医科",
+    subDepartments: [
+      {
+        id: 41,
+        name: "中医内科",
+        description: "专注于脾胃病、心脑病等中医诊疗。特色：中西医结合治疗方案。",
+        doctors: [
+          { 
+            id: 411,
+            name: "郑中医",
+            title: "主任医师",
+            expertise: "脾胃病、心脑病",
+            schedule: {
+              "2024-03-16": { am: true, pm: true },
+              "2024-03-17": { am: true, pm: false },
+              "2024-03-18": { am: false, pm: true },
+              "2024-03-19": { am: true, pm: true },
+              "2024-03-20": { am: true, pm: false },
+            }
+          },
+        ],
+      },
+      {
+        id: 42,
+        name: "针灸推拿科",
+        description: "提供针灸、推拿、拔罐等传统治疗方式。特色：颈肩腰腿痛治疗。",
+        doctors: [
+          { 
+            id: 421,
+            name: "赵针医",
+            title: "主任医师",
+            expertise: "针灸治疗、推拿",
+            schedule: {
+              "2024-03-16": { am: true, pm: false },
+              "2024-03-17": { am: true, pm: true },
+              "2024-03-18": { am: true, pm: false },
+              "2024-03-19": { am: false, pm: true },
               "2024-03-20": { am: true, pm: true },
             }
           },
