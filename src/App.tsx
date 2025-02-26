@@ -12,6 +12,7 @@ import RecordDetail from "./pages/RecordDetail";
 import Payments from "./pages/Payments";
 import AIDiagnosis from "./pages/AIDiagnosis";
 import Profile from "./pages/Profile";
+import PatientEdit from "./pages/PatientEdit";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/payments" element={<Payments />} />
           <Route path="/ai-diagnosis" element={<AIDiagnosis />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/patient-edit" element={<PatientEdit />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

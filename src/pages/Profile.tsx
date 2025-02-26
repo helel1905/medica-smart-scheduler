@@ -1,6 +1,45 @@
 
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
-import { User, ChevronRight, Bell, Shield, HelpCircle, Settings } from "lucide-react";
+import { User, ChevronRight, Bell, Shield, HelpCircle, Settings, UserPlus } from "lucide-react";
+
+interface Patient {
+  id: string;
+  name: string;
+  idCard: string;
+  gender: "男" | "女";
+  birthDate: string;
+  phone: string;
+  address: string;
+  relation: string;
+  isDefault: boolean;
+}
+
+const mockPatients: Patient[] = [
+  {
+    id: "1",
+    name: "张三",
+    idCard: "310101199001011234",
+    gender: "男",
+    birthDate: "1990-01-01",
+    phone: "13812345678",
+    address: "上海市浦东新区张江高科技园区",
+    relation: "本人",
+    isDefault: true,
+  },
+  {
+    id: "2",
+    name: "张小明",
+    idCard: "310101201501011234",
+    gender: "男",
+    birthDate: "2015-01-01",
+    phone: "13812345678",
+    address: "上海市浦东新区张江高科技园区",
+    relation: "子女",
+    isDefault: false,
+  }
+];
 
 const menuItems = [
   { icon: Bell, label: "消息通知", badge: 2 },
@@ -10,6 +49,17 @@ const menuItems = [
 ];
 
 const Profile = () => {
+  const navigate = useNavigate();
+  const [patients, setPatients] = useState<Patient[]>(mockPatients);
+
+  const handleEdit = (patient: Patient) => {
+    navigate("/profile/patient-edit", { state: { patient } });
+  };
+
+  const handleAdd = () => {
+    navigate("/profile/patient-edit");
+  };
+
   return (
     <Layout>
       <div className="p-4 animate-fade-in">
@@ -26,16 +76,45 @@ const Profile = () => {
         </div>
 
         <div className="bg-white rounded-xl shadow-sm mb-6">
-          <div className="p-4 border-b">
+          <div className="p-4 border-b flex justify-between items-center">
             <h3 className="font-semibold">就诊人管理</h3>
+            <button
+              onClick={handleAdd}
+              className="flex items-center gap-1 text-medical-primary text-sm"
+            >
+              <UserPlus className="w-4 h-4" />
+              新增就诊人
+            </button>
           </div>
-          <div className="p-4 flex items-center justify-between">
-            <div>
-              <p className="font-medium">张三</p>
-              <p className="text-sm text-gray-600">身份证: 3101****1234</p>
+          {patients.map((patient) => (
+            <div
+              key={patient.id}
+              className="p-4 border-b last:border-b-0 flex items-center justify-between"
+            >
+              <div>
+                <div className="flex items-center gap-2">
+                  <p className="font-medium">{patient.name}</p>
+                  {patient.isDefault && (
+                    <span className="text-xs text-medical-primary bg-blue-50 px-2 py-0.5 rounded-full">
+                      默认
+                    </span>
+                  )}
+                </div>
+                <p className="text-sm text-gray-600 mt-1">
+                  身份证: {patient.idCard.replace(/(\d{4})\d{10}(\d{4})/, "$1****$2")}
+                </p>
+                <p className="text-sm text-gray-500 mt-1">
+                  {patient.relation} | {patient.gender} | {patient.phone}
+                </p>
+              </div>
+              <button
+                onClick={() => handleEdit(patient)}
+                className="text-medical-primary text-sm"
+              >
+                编辑
+              </button>
             </div>
-            <button className="text-medical-primary text-sm">编辑</button>
-          </div>
+          ))}
         </div>
 
         <div className="bg-white rounded-xl shadow-sm">
