@@ -1,8 +1,7 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
-import { User, ChevronRight, Bell, Shield, HelpCircle, Settings, UserPlus } from "lucide-react";
+import { User, ChevronRight, Bell, Shield, HelpCircle, Settings, UserPlus, Calendar } from "lucide-react";
 
 interface Patient {
   id: string;
@@ -42,6 +41,7 @@ const mockPatients: Patient[] = [
 ];
 
 const menuItems = [
+  { icon: Calendar, label: "我的预约", path: "/appointments" },
   { icon: Bell, label: "消息通知", badge: 2 },
   { icon: Shield, label: "隐私设置" },
   { icon: HelpCircle, label: "帮助中心" },
@@ -58,6 +58,12 @@ const Profile = () => {
 
   const handleAdd = () => {
     navigate("/profile/patient-edit");
+  };
+
+  const handleMenuClick = (path?: string) => {
+    if (path) {
+      navigate(path);
+    }
   };
 
   return (
@@ -123,7 +129,8 @@ const Profile = () => {
             return (
               <div
                 key={index}
-                className="flex items-center justify-between p-4 border-b last:border-b-0"
+                className="flex items-center justify-between p-4 border-b last:border-b-0 cursor-pointer active:bg-gray-50"
+                onClick={() => handleMenuClick(item.path)}
               >
                 <div className="flex items-center gap-3">
                   <Icon className="w-5 h-5 text-gray-600" />
