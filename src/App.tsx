@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Appointments from "./pages/Appointments";
 import AppointmentBooking from "./pages/AppointmentBooking";
 import Records from "./pages/Records";
+import RecordDetail from "./pages/RecordDetail";
 import Payments from "./pages/Payments";
 import AIDiagnosis from "./pages/AIDiagnosis";
 import Profile from "./pages/Profile";
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/appointments" element={<Appointments />} />
           <Route path="/appointments/booking" element={<AppointmentBooking />} />
           <Route path="/records" element={<Records />} />
+          <Route path="/records/:id" element={<RecordDetail />} />
           <Route path="/payments" element={<Payments />} />
           <Route path="/ai-diagnosis" element={<AIDiagnosis />} />
           <Route path="/profile" element={<Profile />} />

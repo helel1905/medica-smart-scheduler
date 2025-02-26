@@ -1,4 +1,5 @@
 
+import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { FileText, ChevronRight } from "lucide-react";
 
@@ -6,9 +7,9 @@ const mockRecords = [
   {
     id: 1,
     date: "2024-03-15",
-    department: "内科",
-    doctor: "张医生",
-    diagnosis: "普通感冒",
+    department: "呼吸与危重症医学科",
+    doctor: "李华",
+    diagnosis: "社区获得性肺炎",
     type: "门诊",
   },
   {
@@ -22,6 +23,8 @@ const mockRecords = [
 ];
 
 const Records = () => {
+  const navigate = useNavigate();
+
   return (
     <Layout>
       <div className="p-4 animate-fade-in">
@@ -31,7 +34,8 @@ const Records = () => {
           {mockRecords.map((record) => (
             <div
               key={record.id}
-              className="bg-white rounded-xl p-4 shadow-sm flex items-center justify-between"
+              className="bg-white rounded-xl p-4 shadow-sm flex items-center justify-between cursor-pointer active:bg-gray-50"
+              onClick={() => navigate(`/records/${record.id}`)}
             >
               <div className="flex items-center">
                 <div className="bg-blue-50 p-2 rounded-lg mr-3">
