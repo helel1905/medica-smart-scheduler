@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
-import { Calendar, Clock, User, ChevronRight } from "lucide-react";
+import { Calendar, Clock, User, ChevronRight, ChevronLeft } from "lucide-react";
 
 const mockTimeSlots = [
   { id: 1, time: "09:00", available: true },
@@ -29,6 +29,10 @@ const AppointmentBooking = () => {
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [selectedPatient, setSelectedPatient] = useState(mockPatients[0]);
 
+  const handleBack = () => {
+    navigate(-1);
+  };
+
   const handleSubmit = () => {
     if (!selectedTime || !selectedPatient) return;
     
@@ -47,7 +51,17 @@ const AppointmentBooking = () => {
   return (
     <Layout>
       <div className="p-4 animate-fade-in">
-        <h1 className="text-xl font-bold mb-4">预约确认</h1>
+        {/* 添加返回按钮 */}
+        <div className="flex items-center mb-4">
+          <button
+            onClick={handleBack}
+            className="flex items-center text-gray-600"
+          >
+            <ChevronLeft className="w-5 h-5" />
+            返回
+          </button>
+          <h1 className="text-xl font-bold ml-2">预约确认</h1>
+        </div>
 
         {/* Date Selection */}
         <div className="bg-white rounded-xl p-4 shadow-sm mb-4">
