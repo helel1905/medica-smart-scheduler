@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
@@ -41,7 +42,7 @@ const mockPatients: Patient[] = [
 ];
 
 const menuItems = [
-  { icon: Calendar, label: "我的预约", path: "/appointments" },
+  { icon: Calendar, label: "我的预约", path: "/my-appointments" },
   { icon: Bell, label: "消息通知", badge: 2 },
   { icon: Shield, label: "隐私设置" },
   { icon: HelpCircle, label: "帮助中心" },
