@@ -2,7 +2,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
-import { User, ChevronRight, Bell, Shield, HelpCircle, Settings, UserPlus, Calendar } from "lucide-react";
+import { User, ChevronRight, Bell, Shield, HelpCircle, Settings, UserPlus, Calendar, LogOut } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface Patient {
   id: string;
@@ -47,10 +48,12 @@ const menuItems = [
   { icon: Shield, label: "隐私设置" },
   { icon: HelpCircle, label: "帮助中心" },
   { icon: Settings, label: "系统设置" },
+  { icon: LogOut, label: "退出登录", path: "/login" },
 ];
 
 const Profile = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [patients, setPatients] = useState<Patient[]>(mockPatients);
 
   const handleEdit = (patient: Patient) => {
@@ -61,8 +64,14 @@ const Profile = () => {
     navigate("/profile/patient-edit");
   };
 
-  const handleMenuClick = (path?: string) => {
+  const handleMenuClick = (path?: string, label?: string) => {
     if (path) {
+      if (label === "退出登录") {
+        toast({
+          title: "退出成功",
+          description: "您已成功退出登录",
+        });
+      }
       navigate(path);
     }
   };
@@ -131,7 +140,7 @@ const Profile = () => {
               <div
                 key={index}
                 className="flex items-center justify-between p-4 border-b last:border-b-0 cursor-pointer active:bg-gray-50"
-                onClick={() => handleMenuClick(item.path)}
+                onClick={() => handleMenuClick(item.path, item.label)}
               >
                 <div className="flex items-center gap-3">
                   <Icon className="w-5 h-5 text-gray-600" />

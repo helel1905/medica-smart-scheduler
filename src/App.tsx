@@ -16,6 +16,7 @@ import AIDiagnosis from "./pages/AIDiagnosis";
 import Profile from "./pages/Profile";
 import PatientEdit from "./pages/PatientEdit";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/appointments" element={<Appointments />} />
           <Route path="/appointments/booking/:deptId/:doctorId" element={<AppointmentBooking />} />
           <Route path="/my-appointments" element={<MyAppointments />} />
