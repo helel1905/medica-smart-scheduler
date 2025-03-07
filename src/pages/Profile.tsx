@@ -1,9 +1,18 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
-import { User, ChevronRight, Bell, Shield, HelpCircle, Settings, UserPlus, Calendar, LogOut } from "lucide-react";
+import { User, ChevronRight, Bell, Shield, HelpCircle, Settings, UserPlus, Calendar, LogOut, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface Patient {
   id: string;
@@ -55,6 +64,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [patients, setPatients] = useState<Patient[]>(mockPatients);
+  const [patientToDelete, setPatientToDelete] = useState<Patient | null>(null);
 
   const handleEdit = (patient: Patient) => {
     navigate("/profile/patient-edit", { state: { patient } });
@@ -74,6 +84,25 @@ const Profile = () => {
       }
       navigate(path);
     }
+  };
+
+  const handleDelete = (patient: Patient) => {
+    setPatientToDelete(patient);
+  };
+
+  const confirmDelete = () => {
+    if (patientToDelete) {
+      setPatients(patients.filter(p => p.id !== patientToDelete.id));
+      toast({
+        title: "删除成功",
+        description: `已删除就诊人 ${patientToDelete.name}`,
+      });
+      setPatientToDelete(null);
+    }
+  };
+
+  const cancelDelete = () => {
+    setPatientToDelete(null);
   };
 
   return (
@@ -107,7 +136,7 @@ const Profile = () => {
               key={patient.id}
               className="p-4 border-b last:border-b-0 flex items-center justify-between"
             >
-              <div>
+              <div className="flex-1">
                 <div className="flex items-center gap-2">
                   <p className="font-medium">{patient.name}</p>
                   {patient.isDefault && (
@@ -123,12 +152,23 @@ const Profile = () => {
                   {patient.relation} | {patient.gender} | {patient.phone}
                 </p>
               </div>
-              <button
-                onClick={() => handleEdit(patient)}
-                className="text-medical-primary text-sm"
-              >
-                编辑
-              </button>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => handleEdit(patient)}
+                  className="text-medical-primary text-sm"
+                >
+                  编辑
+                </button>
+                {!patient.isDefault && (
+                  <button
+                    onClick={() => handleDelete(patient)}
+                    className="text-red-500 text-sm flex items-center gap-1"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    删除
+                  </button>
+                )}
+              </div>
             </div>
           ))}
         </div>
@@ -157,6 +197,21 @@ const Profile = () => {
           })}
         </div>
       </div>
+
+      <AlertDialog open={patientToDelete !== null} onOpenChange={(open) => !open && setPatientToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>确认删除</AlertDialogTitle>
+            <AlertDialogDescription>
+              {patientToDelete && `您确定要删除就诊人 ${patientToDelete.name} 吗？此操作无法撤销。`}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={cancelDelete}>取消</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} className="bg-red-500 hover:bg-red-600">删除</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Layout>
   );
 };
