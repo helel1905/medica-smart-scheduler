@@ -3,6 +3,7 @@ import { useState } from "react";
 import Layout from "@/components/Layout";
 import { Calendar, Clock, ChevronRight, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 interface Doctor {
   name: string;
@@ -71,13 +72,28 @@ const statusColors = {
 
 const MyAppointments = () => {
   const navigate = useNavigate();
-  const [activeFilter, setActiveFilter] = useState<"全部" | "已就诊" | "未就诊">("全部");
+  const { toast } = useToast();
+  const [activeFilter, setActiveFilter] = useState<"全部" | "已就诊" | "未就诊" | "已取消">("全部");
+  const [appointments, setAppointments] = useState<Appointment[]>(mockAppointments);
 
   const handleViewDetail = (appointment: Appointment) => {
     navigate(`/my-appointments/detail/${appointment.id}`, { state: { appointment } });
   };
 
-  const filteredAppointments = mockAppointments.filter(appointment => {
+  const handleCancelAppointment = (appointmentId: string) => {
+    setAppointments(prevAppointments =>
+      prevAppointments.map(appointment =>
+        appointment.id === appointmentId ? { ...appointment, status: "已取消" } : appointment
+      )
+    );
+    toast({
+      title: "预约已取消",
+      description: "您已成功取消预约",
+      variant: "destructive",
+    });
+  };
+
+  const filteredAppointments = appointments.filter(appointment => {
     if (activeFilter === "全部") return true;
     return appointment.status === activeFilter;
   });
@@ -100,12 +116,12 @@ const MyAppointments = () => {
         </div>
 
         {/* Filters */}
-        <div className="flex gap-2 mb-4">
-          {["全部", "已就诊", "未就诊"].map((filter) => (
+        <div className="flex gap-2 mb-4 overflow-x-auto pb-2">
+          {["全部", "已就诊", "未就诊", "已取消"].map((filter) => (
             <button
               key={filter}
               onClick={() => setActiveFilter(filter as typeof activeFilter)}
-              className={`px-4 py-2 rounded-full text-sm ${
+              className={`px-4 py-2 rounded-full text-sm whitespace-nowrap ${
                 activeFilter === filter
                   ? "bg-medical-primary text-white"
                   : "bg-gray-100 text-gray-600"
@@ -128,12 +144,22 @@ const MyAppointments = () => {
                   <h3 className="font-semibold">{appointment.departmentName}</h3>
                   <p className="text-sm text-gray-600">{appointment.doctor.name} | {appointment.doctor.title}</p>
                 </div>
-                <button
-                  onClick={() => handleViewDetail(appointment)}
-                  className="text-medical-primary text-sm"
-                >
-                  查看详情
-                </button>
+                <div className="flex items-center gap-2">
+                  {appointment.status === "未就诊" && (
+                    <button
+                      onClick={() => handleCancelAppointment(appointment.id)}
+                      className="text-red-500 text-sm"
+                    >
+                      取消预约
+                    </button>
+                  )}
+                  <button
+                    onClick={() => handleViewDetail(appointment)}
+                    className="text-medical-primary text-sm"
+                  >
+                    查看详情
+                  </button>
+                </div>
               </div>
 
               <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
